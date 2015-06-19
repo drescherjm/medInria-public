@@ -55,11 +55,22 @@ bool itkDataSHImageReaderBase::canRead (const QStringList &paths)
 
 bool itkDataSHImageReaderBase::canRead (const QString &path)
 {
+<<<<<<< HEAD:src-plugins/itkDataSHImage/readers/itkDataSHImageReaderBase.cpp
     if (!this->io.IsNull()) {
         if (!this->io->CanReadFile ( path.toAscii().constData() ))
             return false;
 
         this->io->SetFileName (path.toAscii().constData());
+=======
+    itk::ImageIOBase::Pointer imageIO = itk::ImageIOFactory::CreateImageIO(path.toLatin1().constData(),
+                                                                           itk::ImageIOFactory::ReadMode);
+
+    if (!imageIO.IsNull()) {
+        if (!imageIO->CanReadFile ( path.toLatin1().constData() ))
+            return false;
+
+        imageIO->SetFileName (path.toLatin1().constData());
+>>>>>>> 6802954... first attempt with Qt5/dtk1:src-plugins/itkDataSHImage/readers/itkDataSHImageReader.cpp
         try {
             this->io->ReadImageInformation();
         }
@@ -85,10 +96,17 @@ bool itkDataSHImageReaderBase::readInformation (const QStringList &paths)
 
 bool itkDataSHImageReaderBase::readInformation (const QString &path)
 {
+<<<<<<< HEAD:src-plugins/itkDataSHImage/readers/itkDataSHImageReaderBase.cpp
     if (this->io.IsNull())
         return false;
     
     this->io->SetFileName ( path.toAscii().constData() );
+=======
+    itk::ImageIOBase::Pointer imageIO = itk::ImageIOFactory::CreateImageIO(path.toLatin1().constData(),
+                                                                           itk::ImageIOFactory::ReadMode);
+    
+    imageIO->SetFileName ( path.toLatin1().constData() );
+>>>>>>> 6802954... first attempt with Qt5/dtk1:src-plugins/itkDataSHImage/readers/itkDataSHImageReader.cpp
     try {
         this->io->ReadImageInformation();
     }
@@ -154,8 +172,12 @@ bool itkDataSHImageReaderBase::read (const QString &path)
             SHImageType::Pointer image = 0;
 
             ReaderType::Pointer reader = ReaderType::New();
+<<<<<<< HEAD:src-plugins/itkDataSHImage/readers/itkDataSHImageReaderBase.cpp
             reader->SetImageIO (this->io);
             reader->SetFileName ( path.toAscii().constData() );
+=======
+            reader->SetFileName ( path.toLatin1().constData() );
+>>>>>>> 6802954... first attempt with Qt5/dtk1:src-plugins/itkDataSHImage/readers/itkDataSHImageReader.cpp
             try {
                 reader->Update();
             }
@@ -174,8 +196,12 @@ bool itkDataSHImageReaderBase::read (const QString &path)
             SHImageType::Pointer image = 0;
 
             ReaderType::Pointer reader = ReaderType::New();
+<<<<<<< HEAD:src-plugins/itkDataSHImage/readers/itkDataSHImageReaderBase.cpp
             reader->SetImageIO (this->io);
             reader->SetFileName ( path.toAscii().constData() );
+=======
+            reader->SetFileName ( path.toLatin1().constData() );
+>>>>>>> 6802954... first attempt with Qt5/dtk1:src-plugins/itkDataSHImage/readers/itkDataSHImageReader.cpp
             try {
                 reader->Update();
             }

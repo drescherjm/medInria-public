@@ -47,6 +47,11 @@
 #include <medParameterPoolManager.h>
 #include <medSettingsManager.h>
 
+// declare x11-specific function to prevent the window manager breaking thumbnail generation
+#ifdef Q_OS_X11
+void qt_x11_wait_for_window_manager(QWidget*);
+#endif
+
 class medVtkViewPrivate
 {
 public:
@@ -398,22 +403,22 @@ void medVtkView::displayDataInfo(uint layer)
         if ( data->hasMetaData ( medMetaDataKeys::PatientName.key() ) )
         {
             const QString patientName = data->metaDataValues ( medMetaDataKeys::PatientName.key() ) [0];
-            d->view2d->SetPatientName ( patientName.toAscii().constData() );
-            d->view3d->SetPatientName ( patientName.toAscii().constData() );
+            d->view2d->SetPatientName ( patientName.toLatin1().constData() );
+            d->view3d->SetPatientName ( patientName.toLatin1().constData() );
         }
 
         if ( data->hasMetaData ( medMetaDataKeys::StudyDescription.key() ) )
         {
             const QString studyName = data->metaDataValues ( medMetaDataKeys::StudyDescription.key() ) [0];
-            d->view2d->SetStudyName ( studyName.toAscii().constData() );
-            d->view3d->SetStudyName ( studyName.toAscii().constData() );
+            d->view2d->SetStudyName ( studyName.toLatin1().constData() );
+            d->view3d->SetStudyName ( studyName.toLatin1().constData() );
         }
 
         if ( data->hasMetaData ( medMetaDataKeys::SeriesDescription.key() ) )
         {
             const QString seriesName = data->metaDataValues ( medMetaDataKeys::SeriesDescription.key() ) [0];
-            d->view2d->SetSeriesName ( seriesName.toAscii().constData() );
-            d->view3d->SetSeriesName ( seriesName.toAscii().constData() );
+            d->view2d->SetSeriesName ( seriesName.toLatin1().constData() );
+            d->view3d->SetSeriesName ( seriesName.toLatin1().constData() );
         }
     }
 }
@@ -427,6 +432,16 @@ QImage medVtkView::buildThumbnail(const QSize &size)
     d->viewWidget->resize(w,h);
     d->renWin->SetSize(w,h);
     render();
+
+
+#ifdef Q_OS_X11
+    // X11 likes to animate window creation, which means by the time we grab the
+    // widget, it might not be fully ready yet, in which case we get artefacts.
+    // Only necessary if rendering to an actual screen window.
+    if(d->renWin->GetOffScreenRendering() == 0) {
+        qt_x11_wait_for_window_manager(d->viewWidget);
+    }
+#endif
 
     QImage thumbnail = QPixmap::grabWidget(d->viewWidget).toImage();
 

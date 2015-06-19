@@ -111,4 +111,4 @@ QStringList itkDataSHImagePlugin::types() const {
                          << "itkMetaDataSHImageWriter";
 }
 
-Q_EXPORT_PLUGIN2(itkDataSHImagePlugin, itkDataSHImagePlugin)
+//Q_EXPORT_PLUGIN2(itkDataSHImagePlugin, itkDataSHImagePlugin)

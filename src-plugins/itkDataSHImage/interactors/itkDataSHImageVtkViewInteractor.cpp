@@ -37,6 +37,10 @@
 #include <itkImage.h>
 #include <itkVectorImage.h>
 
+#include <QSlider>
+#include <QLabel>
+#include <QFormLayout>
+
 class itkDataSHImageVtkViewInteractorPrivate {
 public:
 
