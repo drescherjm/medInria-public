@@ -9,3 +9,15 @@
 CMakeLists.txt.user.*
 build
 thirdparts
+/CMakeFiles
+/CMakeCache.txt
+/superbuild/CMakeFiles
+/superbuild/tmp
+*.vcxproj
+superbuild/DCMTK-configure.vcxproj.filters
+*.filters
+superbuild/cmake_install.cmake
+superbuild/medInria-dev.bat
+superbuild/medInria-prefix/tmp/medInria-cfgcmd.txt
+superbuild/medInria.bat
+superbuild/medInria-prefix/tmp/medInria-cfgcmd.txt.in
